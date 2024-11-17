@@ -191,7 +191,7 @@ export async function run() {
 
     const startCommand = core.getInput("start-command") || defaultCommand || "bash --rcfile /tmp/tmate.bashrc";
     core.debug("Creating new session")
-    await execShellCommand(`${tmate} -F ${newSessionExtra} ${setDefaultCommand} new-session -d "${startCommand}"`);
+    await execShellCommand(`${tmate} ${newSessionExtra} ${setDefaultCommand} new-session -d "${startCommand}"`);
     await execShellCommand(`${tmate} wait tmate-ready`);
     core.debug("Created new session successfully")
 
