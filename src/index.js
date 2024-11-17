@@ -81,6 +81,7 @@ export async function run() {
 
     let tmateExecutable = "tmate"
     if (core.getInput("install-dependencies") !== "false") {
+      core.startGroup('Installing dependencies')
       core.debug("Installing dependencies")
       if (process.platform === "darwin") {
         await execShellCommand('brew install tmate');
@@ -118,6 +119,7 @@ export async function run() {
         fs.unlinkSync(tmateReleaseTar)
       }
       core.debug("Installed dependencies successfully");
+      core.endGroup();
     }
 
     if (process.platform === "win32") {
@@ -194,8 +196,21 @@ export async function run() {
     core.debug("Created new session successfully")
 
     core.debug("Fetching connection strings")
+    console.log(`
+         _                                       _   _
+ ___ ___| |__     ___ ___  _ __  _ __   ___  ___| |_(_) ___  _ __
+/ __/ __| '_ \\   / __/ _ \\| '_ \\| '_ \\ / _ \\/ __| __| |/ _ \\| '_ \\
+\\__ \\__ \\ | | | | (_| (_) | | | | | | |  __/ (__| |_| | (_) | | | |
+|___/___/_| |_|  \\___\\___/|_| |_|_| |_|\\___|\\___|\\__|_|\\___/|_| |_|
+
+   `);
     const tmateSSH = await execShellCommand(`${tmate} display -p '#{tmate_ssh}'`);
     const tmateWeb = await execShellCommand(`${tmate} display -p '#{tmate_web}'`);
+    console.log(`
+
+-------------------------------------------------------------------
+
+  `);
 
     /*
       * Publish a variable so that when the POST action runs, it can determine
