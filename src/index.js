@@ -160,7 +160,13 @@ export async function run() {
 
     // Work around potential `set -e` commands in `~/.profile` (looking at you, `setup-miniconda`!)
     await execShellCommand(`echo 'set +e' >/tmp/tmate.bashrc`);
-    let setDefaultCommand = `set-option -g default-command "bash --rcfile /tmp/tmate.bashrc" \\;`;
+    const defaultCommand = core.getInput("default-command");
+    let setDefaultCommand;
+    if (!!defaultCommand) {
+      setDefaultCommand = `set-option -g default-command "${defaultCommand}" \\;`;
+    } else {
+      setDefaultCommand = `set-option -g default-command "bash --rcfile /tmp/tmate.bashrc" \\;`;
+    }
 
     // The regexes used here for validation are lenient, i.e. may accept
     // values that are not, strictly speaking, valid, but should be good
@@ -181,8 +187,9 @@ export async function run() {
       }
     }
 
+    const startCommand = core.getInput("start-command") || defaultCommand || "bash --rcfile /tmp/tmate.bashrc";
     core.debug("Creating new session")
-    await execShellCommand(`${tmate} ${newSessionExtra} ${setDefaultCommand} new-session -d`);
+    await execShellCommand(`${tmate} ${newSessionExtra} ${setDefaultCommand} new-session -d "${startCommand}"`);
     await execShellCommand(`${tmate} wait tmate-ready`);
     core.debug("Created new session successfully")
 

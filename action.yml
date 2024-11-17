@@ -25,6 +25,13 @@ inputs:
     description: 'In detached mode, the workflow job will continue while the tmate session is active'
     required: false
     default: 'false'
+  default-command:
+    description: 'The default command to run for new tmate shells'
+    required: false
+    default: 'bash --rcfile /tmp/tmate.bashrc'
+  start-command:
+    description: 'The command to run when starting tmate. Default is the value of `default-command`.'
+    required: false
   connect-timeout-seconds:
     description: 'How long in seconds to wait for a connection to be established'
     required: false
