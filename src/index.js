@@ -229,17 +229,6 @@ export async function run() {
 
     core.debug("Entering main loop")
     while (true) {
-      if (publicSSHKeysWarning) {
-        core.warning(publicSSHKeysWarning)
-      }
-      if (tmateWeb) {
-        core.info(`Web shell: ${tmateWeb}`);
-      }
-      core.info(`SSH: ${tmateSSH}`);
-      if (tmateSSHDashI) {
-        core.info(`or: ${tmateSSH.replace(/^ssh/, tmateSSHDashI)}`)
-      }
-
       if (continueFileExists()) {
         core.info("Exiting debugging session because the continue file was created")
         break
